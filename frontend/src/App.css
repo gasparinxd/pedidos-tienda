@@ -1,0 +1,10 @@
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  text-align: left;
+}
+
+.error {
+  color: #c0392b;
+}

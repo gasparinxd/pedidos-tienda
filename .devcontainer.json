@@ -1,0 +1,34 @@
+{
+  "name": "pedidos-tienda",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21",
+      "installMaven": "true"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "forwardPorts": [3000, 8080, 5432, 5672, 15672],
+  "portsAttributes": {
+    "3000": { "label": "Frontend", "onAutoForward": "openBrowser" },
+    "8080": { "label": "Backend", "onAutoForward": "silent" },
+    "5432": { "label": "PostgreSQL", "onAutoForward": "silent" },
+    "5672": { "label": "RabbitMQ AMQP", "onAutoForward": "silent" },
+    "15672": { "label": "RabbitMQ Management", "onAutoForward": "silent" }
+  },
+  "postCreateCommand": "cd frontend && npm install",
+  "postStartCommand": "bash -c 'until docker info >/dev/null 2>&1; do sleep 1; done; docker compose up -d --build'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vmware.vscode-boot-dev-pack",
+        "dbaeumer.vscode-eslint",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+name: devcontainer
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Construir devcontainer y comprobar que levanta el stack solo
+        uses: devcontainers/ci@v0.3
+        with:
+          push: never
+          runCmd: |
+            set -e
+            java -version
+            mvn -v
+            node -v
+            docker --version
+            docker compose version
+            # postStartCommand ya debe haber levantado los servicios
+            for i in $(seq 1 80); do curl -fs http://localhost:3000/api/pedidos && break; sleep 3; done
+            curl -fs http://localhost:3000/api/pedidos
+            curl -fs http://localhost:3000 | grep "<title>Pedidos Tienda</title>"
+            docker compose ps
